@@ -1,0 +1,46 @@
+name: リリース
+description: リリース作業手順チェックリスト
+title: "リリース YYYY-MM-DD"
+labels: ["release"]
+body:
+  - type: input
+    id: datetime
+    attributes:
+      label: 日時
+      placeholder: "YYYY-MM-DD HH:MM"
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: 対象環境
+      options:
+        - prod
+        - stg
+    validations:
+      required: true
+  - type: input
+    id: release_title
+    attributes:
+      label: Release title
+      placeholder: "YYYY/MM/DD"
+    validations:
+      required: true
+  - type: input
+    id: previous_tag
+    attributes:
+      label: Previous tag
+      description: "前回リリースのタグ。例: prod-20260404 / stg-20260404"
+      placeholder: "prod-YYYYMMDD または stg-YYYYMMDD"
+    validations:
+      required: true
+  - type: checkboxes
+    id: steps
+    attributes:
+      label: リリース手順
+      options:
+        - label: PR マージする（ `Merge pull request` ボタン押下）
+        - label: DB スナップショットを取得する
+        - label: "[Actions - Deploy to AWS](https://github.com/simount/logi-go-tms/actions/workflows/deploy-to-aws.yml) を `Run workflow` する（Use workflow from: `main` / デプロイ先の環境: 上記の対象環境）"
+        - label: デプロイ 🆗 を確認する
+        - label: "リリースを publish する（[リリース一覧](https://github.com/simount/logi-go-tms/releases) から対象リリースを開き、Tag: `{対象環境}-YYYYMMDD` / Target: `main` / Release title / Previous tag を確認して `Publish release` 押下）"
